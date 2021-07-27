@@ -1,12 +1,33 @@
 kind: pipeline
 name: default
-type: exec
+type: docker
 steps:
 - name: test
   image: golang:latest
   commands:
   - go test -race ./...
   - go build
+
+trigger:
+  branch:
+    - main
+  event:
+    - pull_request
+    - push
+
+---
+kind: pipeline
+type: exec
+name: default
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: greeting
+  commands:
+  - echo hello world
 
 trigger:
   branch:
