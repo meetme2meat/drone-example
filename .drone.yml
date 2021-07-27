@@ -1,6 +1,6 @@
 kind: pipeline
 name: default
-
+type: exec
 steps:
 - name: test
   image: golang:latest
