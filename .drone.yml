@@ -7,3 +7,10 @@ steps:
   commands:
   - go -race test ./...
   - go build
+
+trigger:
+  branch:
+    - main
+  event:
+    - pull_request
+    - push
