@@ -21,7 +21,7 @@ type: exec
 name: shell
 
 platform:
-  os: linux
+  os: darwin
   arch: amd64
 
 steps:
