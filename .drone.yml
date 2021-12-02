@@ -1,5 +1,5 @@
 kind: template
-load: go.yaml
+load: new.yaml
 data:
   name: test
   image: golang:latest
