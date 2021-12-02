@@ -1,10 +1,12 @@
-kind: template
-load: go.yaml
-data:
-  name: test
+kind: pipeline
+name: default
+type: docker
+steps:
+- name: test
   image: golang:latest
   commands:
-    - go test -race ./...
+  - go test -race ./...
+  - go build
 
 trigger:
   branch:
