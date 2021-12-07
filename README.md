@@ -40,7 +40,7 @@ docker run \
   --restart=always \
   --name=drolling \
   --env-file .env \
-drone/drone:2
+drone/drone:latest
 ```
 
 ## Start drone runner.
@@ -60,7 +60,7 @@ docker run  \
   -p 3001:3000 \
   --restart always \
   --name runner \
-  drone/drone-runner-docker:1
+  drone/drone-runner-docker:latest
 ```
 
 Use `DRONE_UI_USERNAME` and `DRONE_UI_PASSWORD` to login to individual interface of the runners.
