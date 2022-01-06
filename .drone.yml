@@ -37,7 +37,7 @@ trigger:
 
 ---
 kind: template
-load: circuit
+load: circuit.yaml
 data: 
   deploy: deploy
   create_tags:
