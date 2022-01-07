@@ -68,6 +68,6 @@ steps:
         from_secret: github_token
 trigger:
   branch:
-    - master
+    - main
   event:
     - push
