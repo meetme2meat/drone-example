@@ -1,3 +1,4 @@
+---
 kind: template
 load: test
 data:
@@ -8,12 +9,6 @@ data:
     - echo "Running test"
     - go test -race ./...
   
-trigger:
-  branch:
-    - main
-  event:
-    - push
-    - pull_request
 
 ---
 kind: template
@@ -29,7 +24,3 @@ data:
     tags:
       - '${DRONE_SEMVER}'
       - latest
-
-trigger:
-  event:
-    - tag
