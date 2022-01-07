@@ -15,7 +15,6 @@ steps:
       - go clean -testcache
       - echo "Running test"
       - go test -race ./...
-      - echo "Test was success"
     volumes:
       - name: deps
         path: /go
@@ -67,8 +66,8 @@ steps:
         from_secret: github_username
       password:
         from_secret: github_token
-      build_args_from_env:
-        - GITHUB_LOGIN
-        - GITHUB_PASSWORD
-        - VERSION
-        - SERVICE
+trigger:
+  branch:
+    - master
+  event:
+    - push
