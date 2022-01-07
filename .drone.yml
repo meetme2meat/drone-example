@@ -15,6 +15,7 @@ steps:
       - go clean -testcache
       - echo "Running test"
       - go test -race ./...
+      - echo "Test was success"
     volumes:
       - name: deps
         path: /go
