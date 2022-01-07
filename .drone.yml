@@ -8,9 +8,7 @@ data:
     - go clean -testcache
     - go test -race ./...
 
-trigger:
-  event:
-    - pull_request
+
 
 ---
 kind: template
@@ -26,10 +24,3 @@ data:
     tags:
       - '${DRONE_SEMVER}'
       - latest
-
-trigger:
-  branch:
-    - main
-  event:
-    - pull_request
-    - push
