@@ -32,8 +32,13 @@ volumes:
     temp: {}
 
 trigger:
+  branch:
+    - master
+  event:
+    - push
   event:
     - pull_request
+
 ---
 kind: pipeline
 type: docker
@@ -67,7 +72,5 @@ steps:
       password:
         from_secret: github_token
 trigger:
-  branch:
-    - main
   event:
-    - push
+    - tag
