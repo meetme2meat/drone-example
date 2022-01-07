@@ -1,26 +1,72 @@
+kind: pipeline
+type: docker
+name: test
+steps:
+  - name: test
+    image: golang:latest
+    environment:
+      GITHUB_LOGIN:
+        from_secret: github_username
+      GITHUB_PASSWORD:
+        from_secret: github_token
+    commands:
+      - echo "machine github.com login $${GITHUB_LOGIN} password $${GITHUB_PASSWORD}" > /root/.netrc
+      - chmod 600 /root/.netrc
+      - go clean -testcache
+      - go test -race ./...
+    volumes:
+      - name: deps
+        path: /go
+
+  - name: build
+    image: golang:alpine
+    commands:
+      - go build -v -o out .
+    volumes:
+      - name: deps
+        path: /go
+
+volumes:
+  - name: deps
+    temp: {}
+
+trigger:
+  event:
+    - pull_request
 ---
-kind: template
-load: test.yaml
-data:
-  commands:
-    - echo "machine github.com login $${GITHUB_LOGIN} password $${GITHUB_PASSWORD}" > /root/.netrc
-    - chmod 600 /root/.netrc
-    - go clean -testcache
-    - go test -race ./...
-
-
-
----
-kind: template
-load: circuit.yaml
-data: 
-  deploy: deploy
-  create_tags:
+kind: pipeline
+type: docker
+name: deploy
+steps:
+  - name: create-tags
+    image: alpine
     commands:
       - echo "Deploying version $DRONE_SEMVER"
       - echo -n "$DRONE_SEMVER,latest" > .tags
-  backend_image:
-    version: ${DRONE_SEMVER}
-    tags:
-      - '${DRONE_SEMVER}'
-      - latest
+
+  - name: build
+    image: plugins/docker
+    environment:
+      GITHUB_LOGIN:
+        from_secret: github_username
+      GITHUB_PASSWORD:
+        from_secret: github_token
+      VERSION:  ${DRONE_SEMVER}
+      SERVICE: circuits
+    settings:
+      auto_tag: false
+      repo: ghcr.io/meetme2meat/drone-ci-example
+      registry: ghcr.io
+      dockerfile: Dockerfile
+      tags:
+        - '${DRONE_SEMVER}'
+        - latest
+      username:
+        from_secret: github_username
+      password:
+        from_secret: github_token
+      build_args_from_env:
+        - GITHUB_LOGIN
+        - GITHUB_PASSWORD
+        - VERSION
+        - SERVICE
